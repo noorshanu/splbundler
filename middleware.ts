@@ -15,11 +15,11 @@ export default clerkMiddleware(async (auth, req) => {
 
   // // Catch users who do not have `onboardingComplete: true` in their publicMetadata
   // // Redirect them to the /onboading route to complete onboarding
-  if (userId && !sessionClaims?.metadata?.onboardingComplete && req.nextUrl.pathname !== "/dashboard/settings") {
+  if (userId && !sessionClaims?.metadata?.onboardingComplete && req.url !== "/dashboard/settings") {
     const onboardingUrl = new URL("/dashboard/settings", req.url);
     return NextResponse.redirect(onboardingUrl);
   }
-  if (userId && sessionClaims?.metadata?.onboardingComplete && req.nextUrl.pathname == "/") {
+  if (userId && sessionClaims?.metadata?.onboardingComplete && req.url== "/") {
     const onboardingUrl = new URL("/dashboard", req.url);
     return NextResponse.redirect(onboardingUrl);
   }
