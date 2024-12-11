@@ -1,0 +1,13 @@
+⨯ TypeError: The "payload" argument must be of type object. Received null
+0|spl.blocktools.ai  |     at saveSettings (/var/www/html/spl.blocktools.ai/.next/server/chunks/ssr/[root of the server]__fb0e2b._.js:150:17)
+0|spl.blocktools.ai  | digest: "906620832"
+0|spl.blocktools.ai  |  POST /dashboard/settings 500 in 1927ms
+0|spl.blocktools.ai  | Saving Settings in saveSettings function  {
+0|spl.blocktools.ai  |   launchPK: '4hLemgLUwqmK43st1yaaj4FjncwHhZU69b3XCYZJtLoQVB5TkzqgNMGcc3WpjLHsRapu8d2939zz3GkxdJicrEHp',
+0|spl.blocktools.ai  |   rpcURL: 'https://mainnet.helius-rpc.com/?api-key=f0c11eb0-ccc8-4f5f-afb3-b11308f4e46e',
+0|spl.blocktools.ai  |   shyftApiKey: 'hukhj'
+0|spl.blocktools.ai  | }
+0|spl.blocktools.ai  |  ⨯ TypeError: The "payload" argument must be of type object. Received null
+0|spl.blocktools.ai  |     at saveSettings (/var/www/html/spl.blocktools.ai/.next/server/chunks/ssr/[root of the server]__fb0e2b._.js:150:17)
+0|spl.blocktools.ai  | digest: "906620832"
+0|spl.blocktools.ai  |  POST /dashboard/settings 500 in 1994ms
