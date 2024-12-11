@@ -20,8 +20,8 @@ export default function Footer() {
     return (
         <footer className="border-t dark:bg-black">
             <div className="mx-auto max-w-screen-xl px-4 sm:px-6 lg:px-8">
-                <div className="lg:grid lg:grid-cols-2">
-                    <div
+                <div className="lg:grid lg:grid-cols-1">
+                    {/* <div
                         className="border-b   py-8 lg:order-last lg:border-b-0 lg:border-s lg:py-16 lg:ps-16"
                     >
                         <div className="mt-8 space-y-4 lg:mt-0">
@@ -43,22 +43,22 @@ export default function Footer() {
                                 </Button>
                             </form>
                         </div>
-                    </div>
+                    </div> */}
 
                     <div className="py-8 lg:py-16 lg:pe-16">
 
 
-                        <div className="mt-8 grid grid-cols-1 gap-8 sm:grid-cols-2">
+                        <div className="mt-8 grid grid-cols-1 gap-8 sm:grid-cols-3">
 
                             <div>
                                 <p className="font-medium ">Socials</p>
 
                                 <ul className="mt-6 space-y-4 text-sm">
                                     <li>
-                                        <Link href="https://twitter.com/rasmickyy" target="_blank" className="transition hover:opacity-75"> Twitter </Link>
+                                        <Link href="https://twitter.com/" target="_blank" className="transition hover:opacity-75"> Twitter </Link>
                                     </li>
                                     <li>
-                                        <Link href="https://www.youtube.com/@rasmic" target="_blank" className="  transition hover:opacity-75"> YouTube </Link>
+                                        <Link href="https://www.youtube.com/" target="_blank" className="  transition hover:opacity-75"> YouTube </Link>
                                     </li>
                                 </ul>
                             </div>
@@ -75,10 +75,22 @@ export default function Footer() {
                                     </li>
                                 </ul>
                             </div>
+                            <div>
+                                <p className="font-medium ">Product Links</p>
+
+                                <ul className="mt-6 space-y-4 text-sm">
+                                    <li>
+                                        <Link target="_blank" href="/" rel="noopener noreferrer" className="  transition hover:opacity-75"> EVM Bundlers </Link>
+                                    </li>
+                                    <li>
+                                        <Link href="/" className="  transition hover:opacity-75"> Pumpfun </Link>
+                                    </li>
+                                </ul>
+                            </div>
                         </div>
 
                         <div className="mt-8 border-t   pt-8">
-                            <ul className="flex flex-wrap gap-4 text-xs">
+                            <ul className="flex flex-wrap justify-center gap-4 text-xs">
                                 <li>
                                     <a href="/" target="_blank" className="transition hover:opacity-75">Terms & Conditions </a>
                                 </li>
@@ -88,7 +100,7 @@ export default function Footer() {
                                 </li>
                             </ul>
 
-                            <p className="mt-8 text-xs  ">&copy; 2024. SomeCompany LLC. All rights reserved.</p>
+                            <p className="mt-8 text-xs text-center  ">&copy; 2024. SomeCompany LLC. All rights reserved.</p>
                         </div>
                     </div>
                 </div>

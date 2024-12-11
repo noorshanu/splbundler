@@ -6,7 +6,7 @@ import { Button } from "../ui/button";
 import { SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "../ui/sheet";
 import { UserProfile } from "../user-profile";
 import ModeToggle from "../mode-toggle";
-import { BlocksIcon } from "lucide-react";
+import { BlocksIcon ,House } from "lucide-react";
 import { NavigationMenu, NavigationMenuContent, NavigationMenuItem, NavigationMenuLink, NavigationMenuList, NavigationMenuTrigger } from "@/components/ui/navigation-menu";
 import config from "@/config";
 import { cn } from "@/lib/utils";
@@ -30,7 +30,7 @@ export default function NavBar() {
     }
 
     return (
-        <div className="flex min-w-full fixed justify-between p-2 border-b z-10 bg-[#252525] ">
+        <div className="flex min-w-full fixed justify-between p-2 border-b z-10 bg-[#25252580] ">
             <div className="flex justify-between w-full min-[825px]:hidden">
                 <Dialog>
                     <SheetTrigger className="p-2 transition">
@@ -63,29 +63,12 @@ export default function NavBar() {
             <NavigationMenu>
                 <NavigationMenuList className="max-[825px]:hidden flex gap-3 w-[100%] justify-between">
                     <Link href="/" className="pl-2 flex items-center" aria-label="Home">
-                        <BlocksIcon aria-hidden="true" />
+                        <House aria-hidden="true" />
                         <span className="sr-only">Home</span>
                     </Link>
                 </NavigationMenuList>
                 <NavigationMenuList>
-                    <NavigationMenuItem className="max-[825px]:hidden ml-5">
-                        <NavigationMenuTrigger className="dark:bg-black dark:bg-opacity-50">
-                            Features
-                        </NavigationMenuTrigger>
-                        <NavigationMenuContent>
-                            <ul className="flex flex-col w-[400px] gap-3 p-4 lg:w-[500px]">
-                                {components.map((component, index) => (
-                                    <ListItem
-                                        key={index}
-                                        title={component.title}
-                                        href={component.href}
-                                    >
-                                        {component.description}
-                                    </ListItem>
-                                ))}
-                            </ul>
-                        </NavigationMenuContent>
-                    </NavigationMenuItem>
+                 
                     <NavigationMenuItem className="max-[825px]:hidden">
                         <Link href="/dashboard" legacyBehavior passHref>
                             <Button variant="ghost">
@@ -97,7 +80,7 @@ export default function NavBar() {
             </NavigationMenu>
             <div className="flex items-center gap-2 max-[825px]:hidden">
                 {userId && <UserProfile />}
-                <ModeToggle />
+                {/* <ModeToggle /> */}
             </div>
         </div>
     );
