@@ -1,40 +1,52 @@
 import { clerkMiddleware, createRouteMatcher } from "@clerk/nextjs/server";
 import { NextResponse } from "next/server";
 
-const isPublicRoute = createRouteMatcher(["/", "/dashboard/settings"])
+// Define public routes
+const isPublicRoute = createRouteMatcher(["/", "/dashboard/settings"]);
 
 export default clerkMiddleware(async (auth, req) => {
   const { userId, sessionClaims, redirectToSignIn } = await auth();
+  const currentPath = req.nextUrl.pathname;
 
-  // If the user isn't signed in and the route is private, redirect to sign-in
+  // Helper to create absolute URLs dynamically
+  const createUrl = (path) => {
+    const baseUrl = req.nextUrl.origin || `https://${req.headers.get("host")}`;
+    return new URL(path, baseUrl);
+  };
+
+  // Handle unauthenticated users on private routes
   if (!userId && !isPublicRoute(req)) {
     return redirectToSignIn({ returnBackUrl: req.url });
-  }  
-
- 
-
-  // // Catch users who do not have `onboardingComplete: true` in their publicMetadata
-  // // Redirect them to the /onboading route to complete onboarding
-  if (userId && !sessionClaims?.metadata?.onboardingComplete && req.nextUrl.pathname !== "/dashboard/settings") {
-    const onboardingUrl = new URL("/dashboard/settings", req.url);
-    return NextResponse.redirect(onboardingUrl);
   }
-  if (userId && sessionClaims?.metadata?.onboardingComplete && req.nextUrl.pathname == "/") {
-    const onboardingUrl = new URL("/dashboard", req.url);
-    return NextResponse.redirect(onboardingUrl);
-  }
-  // If the user is logged in and the route is protected, let them view.
-  if (userId && !isPublicRoute(req)) {
-    return NextResponse.next();
-  } 
 
+  // Redirect users who haven't completed onboarding to the settings page
+  if (
+    userId &&
+    !sessionClaims?.metadata?.onboardingComplete &&
+    currentPath !== "/dashboard/settings"
+  ) {
+    return NextResponse.redirect(createUrl("/dashboard/settings"));
+  }
+
+  // Redirect users who completed onboarding to the dashboard if they visit the root
+  if (
+    userId &&
+    sessionClaims?.metadata?.onboardingComplete &&
+    currentPath === "/"
+  ) {
+    return NextResponse.redirect(createUrl("/dashboard"));
+  }
+
+  // Allow access to private routes for authenticated users
+  return NextResponse.next();
 });
 
+// Middleware configuration to handle routes
 export const config = {
   matcher: [
-    // Skip Next.js internals and all static files, unless found in search params
+    // Match all dynamic routes except for static files and Next.js internals
     '/((?!_next|[^?]*\\.(?:html?|css|js(?!on)|jpe?g|webp|png|gif|svg|ttf|woff2?|ico|csv|docx?|xlsx?|zip|webmanifest)).*)',
-    // Always run for API routes
+    // Always match API routes
     '/(api|trpc)(.*)',
   ],
 };
