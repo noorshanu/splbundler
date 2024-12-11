@@ -9,7 +9,7 @@ export default clerkMiddleware(async (auth, req) => {
   const currentPath = req.nextUrl.pathname;
 
   // Helper to create absolute URLs dynamically
-  const createUrl = (path) => {
+  const createUrl = (path: string | URL) => {
     const baseUrl = req.nextUrl.origin || `https://${req.headers.get("host")}`;
     return new URL(path, baseUrl);
   };
