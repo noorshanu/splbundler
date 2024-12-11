@@ -10,8 +10,8 @@ export default clerkMiddleware(async (auth, req) => {
 
   // Helper to create absolute URLs dynamically
   const createUrl = (path: string | URL) => {
-    const baseUrl = req.nextUrl.origin || `https://${req.headers.get("host")}`;
-    return new URL(path, baseUrl);
+    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || req.nextUrl.origin || `https://${req.headers.get("host")}`;
+  return new URL(path, baseUrl);
   };
 
   // Handle unauthenticated users on private routes
