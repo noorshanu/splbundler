@@ -6,22 +6,21 @@ const isPublicRoute = createRouteMatcher(["/", "/dashboard/settings"]);
 export default clerkMiddleware(async (auth, req) => {
   const { userId, sessionClaims, redirectToSignIn } = await auth();
 
-  // Set the base URL dynamically based on the environment
+  // Determine base URL based on the environment
   const baseUrl =
     process.env.NODE_ENV === "production"
-      ? "https://spl.blocktools.ai" // Replace with your production URL
+      ? "https://spl.blocktools.ai" // Production base URL
       : req.nextUrl.origin || `http://${req.headers.get("host")}`;
 
-  // Helper function to construct full URLs
+  // Helper function to build full URLs
   const buildUrl = (path: string | URL) => new URL(path, baseUrl).toString();
 
-  // If the user isn't signed in and the route is private, redirect to sign-in
+  // Redirect to sign-in if the user is not logged in and the route is private
   if (!userId && !isPublicRoute(req)) {
-    return redirectToSignIn({ returnBackUrl: req.url });
+    return redirectToSignIn({ returnBackUrl: buildUrl(req.nextUrl.pathname) });
   }
 
-  // Catch users who do not have `onboardingComplete: true` in their publicMetadata
-  // Redirect them to the /onboarding route to complete onboarding
+  // Redirect users who haven't completed onboarding
   if (
     userId &&
     !sessionClaims?.metadata?.onboardingComplete &&
@@ -30,7 +29,7 @@ export default clerkMiddleware(async (auth, req) => {
     return NextResponse.redirect(buildUrl("/dashboard/settings"));
   }
 
-  // Redirect users with `onboardingComplete: true` to the dashboard
+  // Redirect users who completed onboarding from the root to the dashboard
   if (
     userId &&
     sessionClaims?.metadata?.onboardingComplete &&
@@ -39,7 +38,7 @@ export default clerkMiddleware(async (auth, req) => {
     return NextResponse.redirect(buildUrl("/dashboard"));
   }
 
-  // If the user is logged in and the route is protected, let them view.
+  // Allow the request to proceed if the user is logged in and the route is protected
   if (userId && !isPublicRoute(req)) {
     return NextResponse.next();
   }
@@ -47,7 +46,7 @@ export default clerkMiddleware(async (auth, req) => {
 
 export const config = {
   matcher: [
-    // Skip Next.js internals and all static files, unless found in search params
+    // Match all routes except for Next.js internals and static files
     "/((?!_next|[^?]*\\.(?:html?|css|js(?!on)|jpe?g|webp|png|gif|svg|ttf|woff2?|ico|csv|docx?|xlsx?|zip|webmanifest)).*)",
     // Always run for API routes
     "/(api|trpc)(.*)",
