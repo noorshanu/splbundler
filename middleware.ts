@@ -19,33 +19,44 @@ export default clerkMiddleware(async (auth, req) => {
 
   // If the user isn't signed in and the route is private, redirect to sign-in
   if (!userId && !isPublicRoute(req)) {
-    return redirectToSignIn({ returnBackUrl: req.url });
-  }  
+    return redirectToSignIn({ returnBackUrl: createUrl(currentPath).toString() });
+  } 
 
  
 
   // // Catch users who do not have `onboardingComplete: true` in their publicMetadata
   // // Redirect them to the /onboading route to complete onboarding
-  if (userId && !sessionClaims?.metadata?.onboardingComplete && req.nextUrl.pathname !== "/dashboard/settings") {
-    const onboardingUrl = new URL("/dashboard/settings", req.url);
-    return NextResponse.redirect(onboardingUrl);
+  if (
+    userId &&
+    !sessionClaims?.metadata?.onboardingComplete &&
+    currentPath !== "/dashboard/settings"
+  ) {
+    return NextResponse.redirect(createUrl("/dashboard/settings"));
   }
-  if (userId && sessionClaims?.metadata?.onboardingComplete && req.nextUrl.pathname == "/") {
-    const onboardingUrl = new URL("/dashboard", req.url);
-    return NextResponse.redirect(onboardingUrl);
+  
+   // Redirect users who completed onboarding to the dashboard if they visit the root
+   if (
+    userId &&
+    sessionClaims?.metadata?.onboardingComplete &&
+    currentPath === "/"
+  ) {
+    return NextResponse.redirect(createUrl("/dashboard"));
   }
+
+  // Allow access to private routes for authenticated users
+  return NextResponse.next();
   // If the user is logged in and the route is protected, let them view.
-  if (userId && !isPublicRoute(req)) {
-    return NextResponse.next();
-  } 
+  // if (userId && !isPublicRoute(req)) {
+  //   return NextResponse.next();
+  // } 
 
 });
 
 export const config = {
   matcher: [
-    // Skip Next.js internals and all static files, unless found in search params
+    // Match all dynamic routes except for static files and Next.js internals
     '/((?!_next|[^?]*\\.(?:html?|css|js(?!on)|jpe?g|webp|png|gif|svg|ttf|woff2?|ico|csv|docx?|xlsx?|zip|webmanifest)).*)',
-    // Always run for API routes
+    // Always match API routes
     '/(api|trpc)(.*)',
   ],
 };
