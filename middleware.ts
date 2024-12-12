@@ -2,9 +2,20 @@ import { clerkMiddleware, createRouteMatcher } from "@clerk/nextjs/server";
 import { NextResponse } from "next/server";
 
 const isPublicRoute = createRouteMatcher(["/", "/dashboard/settings"])
+const PRODUCTION_BASE_URL = "https://spl.blocktools.ai";
 
 export default clerkMiddleware(async (auth, req) => {
   const { userId, sessionClaims, redirectToSignIn } = await auth();
+  const currentPath = req.nextUrl.pathname;
+
+  // Helper to construct the URL for redirection
+  const createUrl = (path: string): URL => {
+    const baseUrl =
+      process.env.NODE_ENV === "production"
+        ? PRODUCTION_BASE_URL
+        : req.nextUrl.origin || `http://${req.headers.get("host")}`;
+    return new URL(path, baseUrl);
+  };
 
   // If the user isn't signed in and the route is private, redirect to sign-in
   if (!userId && !isPublicRoute(req)) {
