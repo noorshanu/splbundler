@@ -1,48 +1,33 @@
 import { clerkMiddleware, createRouteMatcher } from "@clerk/nextjs/server";
 import { NextResponse } from "next/server";
 
-// Define public routes
-const isPublicRoute = createRouteMatcher(["/", "/dashboard/settings"]);
+const isPublicRoute = createRouteMatcher(["/", "/dashboard/settings"])
 
 export default clerkMiddleware(async (auth, req) => {
   const { userId, sessionClaims, redirectToSignIn } = await auth();
 
-  // Dynamic base URL configuration
-  const baseUrl =
-    process.env.NODE_ENV === "production"
-      ? "https://spl.blocktools.ai" // Production domain
-      : req.nextUrl.origin || `http://${req.headers.get("host")}`;
-
-  // Helper function to build full URLs
-  const buildUrl = (path: string | URL) => new URL(path, baseUrl).toString();
-
-  // Redirect to sign-in if the user is not logged in and the route is private
+  // If the user isn't signed in and the route is private, redirect to sign-in
   if (!userId && !isPublicRoute(req)) {
-    return redirectToSignIn({ returnBackUrl: buildUrl(req.nextUrl.pathname) });
-  }
+    return redirectToSignIn({ returnBackUrl: req.url });
+  }  
 
-  // Redirect users who haven't completed onboarding
-  if (
-    userId &&
-    !sessionClaims?.metadata?.onboardingComplete &&
-    req.nextUrl.pathname !== "/dashboard/settings"
-  ) {
-    return NextResponse.redirect(buildUrl("/dashboard/settings"));
-  }
+ 
 
-  // Redirect users who completed onboarding from the root to the dashboard
-  if (
-    userId &&
-    sessionClaims?.metadata?.onboardingComplete &&
-    req.nextUrl.pathname === "/"
-  ) {
-    return NextResponse.redirect(buildUrl("/dashboard"));
+  // // Catch users who do not have `onboardingComplete: true` in their publicMetadata
+  // // Redirect them to the /onboading route to complete onboarding
+  if (userId && !sessionClaims?.metadata?.onboardingComplete && req.nextUrl.pathname !== "/dashboard/settings") {
+    const onboardingUrl = new URL("/dashboard/settings", req.url);
+    return NextResponse.redirect(onboardingUrl);
   }
-
-  // Allow the request to proceed if the user is logged in and the route is protected
+  if (userId && sessionClaims?.metadata?.onboardingComplete && req.nextUrl.pathname == "/") {
+    const onboardingUrl = new URL("/dashboard", req.url);
+    return NextResponse.redirect(onboardingUrl);
+  }
+  // If the user is logged in and the route is protected, let them view.
   if (userId && !isPublicRoute(req)) {
     return NextResponse.next();
-  }
+  } 
+
 });
 
 export const config = {
@@ -52,4 +37,4 @@ export const config = {
     // Always run for API routes
     '/(api|trpc)(.*)',
   ],
-}
+};
