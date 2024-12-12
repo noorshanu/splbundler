@@ -1,0 +1,30 @@
+Failed to fetch settings: Error [PrismaClientKnownRequestError]: 
+0|splbund2  | Invalid `prisma.userSetting.findFirst()` invocation:
+0|splbund2  | Raw query failed. Code: `unknown`. Message: `Kind: Server selection timeout: No available servers. Topology: { Type: ReplicaSetNoPrimary, Set Name: atlas-3s06w5-shard-0, Servers: [ { Address: cluster0-shard-00-02.tv3cs.mongodb.net:27017, Type: Unknown, Error: Kind: I/O error: received fatal alert: InternalError, labels: {} }, { Address: cluster0-shard-00-01.tv3cs.mongodb.net:27017, Type: Unknown, Error: Kind: I/O error: received fatal alert: InternalError, labels: {} }, { Address: cluster0-shard-00-00.tv3cs.mongodb.net:27017, Type: Unknown, Error: Kind: I/O error: received fatal alert: InternalError, labels: {} } ] }, labels: {}`
+0|splbund2  |     at Mn.handleRequestError (/var/www/html/splbundler/node_modules/@prisma/client/runtime/library.js:121:7338)
+0|splbund2  |     at Mn.handleAndLogRequestError (/var/www/html/splbundler/node_modules/@prisma/client/runtime/library.js:121:6663)
+0|splbund2  |     at Mn.request (/var/www/html/splbundler/node_modules/@prisma/client/runtime/library.js:121:6370)
+0|splbund2  |     at async l (/var/www/html/splbundler/node_modules/@prisma/client/runtime/library.js:130:9633)
+0|splbund2  |     at async l (/var/www/html/splbundler/.next/server/app/dashboard/settings/page.js:1:3210)
+0|splbund2  |     at async (/var/www/html/splbundler/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:127:1299)
+0|splbund2  |     at async rc (/var/www/html/splbundler/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:126:11937)
+0|splbund2  |     at async an (/var/www/html/splbundler/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:132:1048)
+0|splbund2  |     at async doRender (/var/www/html/splbundler/node_modules/next/dist/server/base-server.js:1568:34)
+0|splbund2  |     at async responseGenerator (/var/www/html/splbundler/node_modules/next/dist/server/base-server.js:1814:28) {
+0|splbund2  |   code: 'P2010',
+0|splbund2  |   clientVersion: '6.0.1',
+0|splbund2  |   meta: [Object]
+0|splbund2  | }
+0|splbund2  |  ⨯ Error: Failed to fetch settings
+0|splbund2  |     at l (/var/www/html/splbundler/.next/server/app/dashboard/settings/page.js:1:3320)
+0|splbund2  |     at async (/var/www/html/splbundler/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:127:1299)
+0|splbund2  |     at async rc (/var/www/html/splbundler/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:126:11937)
+0|splbund2  |     at async an (/var/www/html/splbundler/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:132:1048)
+0|splbund2  |     at async doRender (/var/www/html/splbundler/node_modules/next/dist/server/base-server.js:1568:34)
+0|splbund2  |     at async responseGenerator (/var/www/html/splbundler/node_modules/next/dist/server/base-server.js:1814:28)
+0|splbund2  |     at async NextNodeServer.renderToResponseWithComponentsImpl (/var/www/html/splbundler/node_modules/next/dist/server/base-server.js:1824:28)
+0|splbund2  |     at async NextNodeServer.renderPageComponent (/var/www/html/splbundler/node_modules/next/dist/server/base-server.js:2240:24)
+0|splbund2  |     at async NextNodeServer.renderToResponseImpl (/var/www/html/splbundler/node_modules/next/dist/server/base-server.js:2278:32)
+0|splbund2  |     at async NextNodeServer.pipeImpl (/var/www/html/splbundler/node_modules/next/dist/server/base-server.js:960:25) {
+0|splbund2  |   digest: '3914015072'
+0|splbund2  | }
